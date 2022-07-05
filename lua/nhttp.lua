@@ -1,7 +1,8 @@
 local api = vim.api
 local buf, win
-local windows = require("windows")
+local windows = require("nhttp_windows")
 local parser = require("intelliparser")
+local utils = require("nhttp_utils")
 
 local function parse_response(resp)
   if resp == nil then return end
@@ -33,28 +34,25 @@ local function execute_command()
   local cmd = parser.get_curl_command()
   local start = os.clock()
   local resp = vim.fn.systemlist(cmd)
-  local time_elapsed = os.clock() - start
+  local time_elapsed = (os.clock() - start) * 100
   status, content_type, content_length, content = parse_response(resp)
   local size = "unknown"
   if #content_length > 0 then size = content_length end
   status_txt = string.format("status=%d | time=%.3f s | size=%s \n", status, time_elapsed, size)
   api.nvim_out_write(status_txt)
 
-  windows.println(type(status))
   local post_process_cmd = api.nvim_get_var("nhttp_cmd")
-  local processed_output = ""
   if status <= 206 and #post_process_cmd > 0 then
     local pp_cmd = string.gsub(post_process_cmd, '?', string.format("'%s'", content))
-    processed_output = processed_output .. vim.fn.system(pp_cmd)
-    windows.print_response(processed_output)
+    windows.print_out(vim.fn.systemlist(pp_cmd))
   else
-    windows.print_response(content)
+    windows.print_out(content)
   end
 end
 
 local function show_command()
   local cmd = parser.get_curl_command()
-  windows.print_response(cmd)
+  windows.print_out(cmd)
 end
 
 return {

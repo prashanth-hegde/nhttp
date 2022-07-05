@@ -1,5 +1,6 @@
 local api = vim.api
-local json = require("json")
+local json = require("nhttp_json")
+local util = require("nhttp_utils")
 
 local function get_type()
   return api.nvim_buf_get_option(0, "filetype")
@@ -68,7 +69,7 @@ local function hydrate_config(url)
     local conf_file =  path .. "http-client.env.json"
     if conf_file == nil then return nil end
 
-    local currenv = api.nvim_get_var("nhttp_env")
+    local currenv = util.get_opt("nhttp_env")
     local conf_lines = lines_from(conf_file)
     local conf = json.parse_table(conf_lines)
     if conf == nil then
