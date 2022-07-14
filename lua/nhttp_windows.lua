@@ -39,7 +39,8 @@ local function print_out(output)
     api.nvim_put(output, "l", true, false)
   elseif type(output) == "string" then
     api.nvim_command("set wrap")
-    api.nvim_put({output}, "l", true, false)
+    api.nvim_paste(output, true, -1)
+    api.nvim_win_set_cursor(0, {1, 0})
   end
 
   if not switch then api.nvim_set_current_win(currwin) end

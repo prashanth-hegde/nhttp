@@ -8,19 +8,20 @@ end
 
 local function extract_relevant_lines()
   local linenum = api.nvim_win_get_cursor(0)[1]
+  local linebreak = "###"
   local start_line, end_line = linenum, linenum
   -- find start of block
   repeat
     local currline = api.nvim_buf_get_lines(0, linenum-1, linenum, false)[1]
     linenum = linenum - 1
-  until linenum == 0 or currline == nil or string.find(currline, "###") ~= nil
+  until linenum == 0 or currline == nil or string.find(currline, linebreak) ~= nil
   start_line = linenum + 1
   -- find end of block
   linenum = end_line
   repeat
     local currline = api.nvim_buf_get_lines(0, linenum-1, linenum, false)[1]
     linenum = linenum + 1
-  until linenum == api.nvim_buf_line_count(0) or currline == nil or string.find(currline, "###") ~= nil
+  until linenum == api.nvim_buf_line_count(0) or currline == nil or string.find(currline, linebreak) ~= nil
   end_line = linenum - 2
 
   local buflines = api.nvim_buf_get_lines(0, start_line, end_line, false)
