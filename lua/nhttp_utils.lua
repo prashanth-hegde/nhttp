@@ -32,5 +32,5 @@ end
 
 return {
   get_opt           = get_opt,
-  print_out         = print_out,
+  println           = println,
 }
