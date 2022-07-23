@@ -2,7 +2,6 @@ local api = vim.api
 local buf, win
 local windows = require("nhttp_windows")
 local parser = require("intelliparser")
-local utils = require("nhttp_utils")
 
 local function parse_response(resp)
   if resp == nil then return end
@@ -11,7 +10,7 @@ local function parse_response(resp)
   local content_type, content_length, content = "", "", ""
   for k, v in ipairs(resp) do
     if k == 1 then
-      status = tonumber(v:match(" (%d+)%s"))
+      status = tonumber(v:match(" (%d+)%s")) or 500
       if status > 206 then
         start = true
         content = content .. v
@@ -35,7 +34,7 @@ local function execute_command()
   local start = os.clock()
   local resp = vim.fn.systemlist(cmd)
   local time_elapsed = (os.clock() - start) * 100
-  status, content_type, content_length, content = parse_response(resp)
+  local status, content_type, content_length, content = parse_response(resp)
   local size = "unknown"
   if #content_length > 0 then size = content_length end
   status_txt = string.format("status=%d | time=%.3f s | size=%s \n", status, time_elapsed, size)

@@ -32,16 +32,16 @@ local function create_usable_url(block)
   if block == nil then return "" end
   local url = ""
   local headers = {}
-  for k, v in next, block, nil do
-    if string.find(v, "#") == nil and string.find(v, ":") == nil then
+  for _, v in next, block, nil do
+    if string.find(v, "#") == nil and (string.find(v, ":") == nil or string.match(v, "http") ~= nil) then
       url = url .. v
-    elseif string.find(v, "#") == nil and string.find(v, ":") ~= nil then
+    elseif string.find(v, "#") == nil and string.find(v, ":") ~= nil  then
       table.insert(headers, v)
     end
   end
 
   local header_str = ""
-  for k, v in next, headers, nil do
+  for _, v in next, headers, nil do
     header_str = header_str .. string.format(' -H "%s"', v)
   end
 
@@ -50,8 +50,8 @@ local function create_usable_url(block)
 end
 
 local function lines_from(file)
-  local function file_exists(file)
-    local f = io.open(file, "rb")
+  local function file_exists(fi)
+    local f = io.open(fi, "rb")
 	if f then f:close() end
   	return f ~= nil
   end
@@ -98,7 +98,7 @@ local function hydrate_config(url)
 end
 
 local function get_curl_command()
-  local currfiletype, err = pcall(get_type)
+  local currfiletype, _ = pcall(get_type)
   if currfiletype == false or (get_type() ~= "http" and get_type() ~= "conf") then
     api.nvim_out_write("File is not http, cannot execute. :set ft=http and try again\n")
     return
