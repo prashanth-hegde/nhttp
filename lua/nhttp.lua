@@ -37,7 +37,7 @@ local function execute_command()
   local status, content_type, content_length, content = parse_response(resp)
   local size = "unknown"
   if #content_length > 0 then size = content_length end
-  status_txt = string.format("status=%d | time=%.3f s | size=%s \n", status, time_elapsed, size)
+  local status_txt = string.format("status=%d | time=%.3f s | size=%s \n", status, time_elapsed, size)
   api.nvim_out_write(status_txt)
 
   local post_process_cmd = api.nvim_get_var("nhttp_cmd")

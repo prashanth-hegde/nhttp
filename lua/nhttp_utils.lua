@@ -20,6 +20,7 @@ local function get_opt(opt)
     ["nhttp_split"]                     = "vertical",
     ["nhttp_env"]                       = "prod",
     ["nhttp_cmd"]                       = "",
+    -- ["nhttp_config_file"]             = "http-client.env.json"
   }
   local o, err = pcall(function() api.nvim_get_var(opt) end)
   if not o then
@@ -27,7 +28,9 @@ local function get_opt(opt)
   else
     o = api.nvim_get_var(opt)
   end
-  return tostring(o)
+  -- todo: this used to be tostring(0) and recently changed to remove tostring()
+  -- if there are issues with the plugin, check this
+  return o
 end
 
 return {
