@@ -70,7 +70,33 @@ vim.g["nhttp_cmd"] = "jpath . ?"
 vim.g["nhttp_switch_to_output_window"] = "false"
 ```
 
+**recommended settings**
+The file extension `.http` is not readily recognized by vim. It is identified as a config file.
+In order to properly treat it and issue keyboard shortcuts, you can make small tweaks to the
+startup to readily recognize the file and use keyboard shortcuts to trigger an http request
+
+```lua
+-- nhttp execute on <CR> key
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = 'conf',
+  callback = function()
+    vim.keymap.set('n', '<CR>', '<CMD>NHttp<CR>', {buffer=true})
+  end,
+})
+```
+
+#### override global configuration
+One way to configure variables is via vim global variables as shown.
+However, if the user wants to override the global variables with file specific variables,
+it can be achieved via setting the variable within the file at the top. This is a
+nhttp specific feature, and not related to Intellij
+
+
 ### todo
+* graphql support
+* convert to 100% lua based, no vimscript
+* NHttpCopyToClipboard command
+
 
 ### references
 1. [http client](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html)
