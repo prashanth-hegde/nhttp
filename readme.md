@@ -4,9 +4,14 @@ A nvim plugin to make http calls right from nvim
 http requests is a standard introduced by Intellij idea. More details can be found [here](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html)
 This plugin uses only neovim to issue http requests, obtain responses and process the output.
 
+### pre-requisites
+The plugin uses `curl` to make http calls. There are no other pre-requisites to installing and running the plugin.
+Just ensure curl is installed and available in the path.
+Also, if `nhttp_cmd` is configured, that application also needs to be available in the path
+
 ### install
 
-install via any package manager:
+install via any neovim package manager:
 ```
 'prashanth-hegde/nhttp'
 ```
@@ -42,7 +47,8 @@ This is a custom property that can be set by the user to perform post processing
 For instance, lets say you gor a compressed json as a result, you could perform post processing
 on the json to format the json, map/filter by using something like `jq`, `jpath` or similar
 
-If the output is text, you could set a custom `grep` or `awk` pattern to only show the lines you care about
+If the output is text, you could set a custom `grep` or `awk` pattern to only show the lines you care about.
+If this option is not configured, the output rendered as-is and no post-processing is done.
 
 In all cases, a special wildcard `?` is used to represent the output. For example, id you want to use `jq`
 on a json output, you could the following to pretty print the output
@@ -50,9 +56,22 @@ on a json output, you could the following to pretty print the output
 `let nhttp_cmd = "jq . ?"`
 
 #### nhttp_config_file
-Per the
+Per the http documentation, it is mentioned that the environment configuration is specified as `http-client.env.json`.
+
+`nhttp` lets the user to override this config file to be present anywhere. If an absolute path is not provided,
+the config file is assumed to be relative to the file that is being operated upon.
+Also the config file is only needed if there are any variables present in the http file. If there are no variables,
+neither the config is needed nor the file is needed to be configured
+
+#### example configuration
+
+```lua
+vim.g["nhttp_cmd"] = "jpath . ?"
+vim.g["nhttp_switch_to_output_window"] = "false"
+```
 
 ### todo
 
 ### references
 1. [http client](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html)
+1. [jpath](https://github.com/prashanth-hegde/jpath)
