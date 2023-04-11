@@ -91,11 +91,25 @@ However, if the user wants to override the global variables with file specific v
 it can be achieved via setting the variable within the file at the top. This is a
 nhttp specific feature, and not related to Intellij
 
+### commands
+
+#### NHttp
+This is the executor command - It parses the request under the cursor and issues a `curl` request,
+and renders the response in the output buffer. For easy trigger, this command can be mapped
+to a keystroke if needed
+
+#### NHttpCmd
+This command takes the request under the cursor and generates the curl command and displays
+the curl command in the output window
+
+#### NHttpCopy
+This command copies the generated curl command under the cursor and puts it in the register '*'
+Meaning, the clipboard contents now has the `curl` command from the request in the cursor section
 
 ### todo
 * graphql support
 * convert to 100% lua based, no vimscript
-* NHttpCopyToClipboard command
+* the time taken metric has a bug in it, needs to be fixed
 
 
 ### references
