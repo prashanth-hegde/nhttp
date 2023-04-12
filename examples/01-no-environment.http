@@ -1,0 +1,26 @@
+
+# This is a comment line
+# The below line is a request separator. It is supposed to have only
+# three hashtags and nothing else. The text in between these separators are
+# parsed to generate the request
+
+###
+
+# gets a json result from the specified api
+# with the specified parameters
+GET https://randomuser.me/api
+    ?results=10
+
+###
+
+# Adds header value to the api request
+# no need to provide quotes in the headers
+Accept: application/json
+GET https://randomuser.me/api
+    ?results=10
+
+###
+
+# ============= You can use comments to separate multiple sections ============
+
+

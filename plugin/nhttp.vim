@@ -5,6 +5,7 @@ set cpo&vim                                         " reset them to defaults
 
 command! NHttp lua require'nhttp'.execute_command()
 command! NHttpCmd lua require'nhttp'.show_command()
+command! NHttpCopy lua require'nhttp'.copy_to_clipboard()
 
 let &cpo = s:save_cpo                               " and restore after
 unlet s:save_cpo
