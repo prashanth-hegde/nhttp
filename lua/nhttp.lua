@@ -30,13 +30,15 @@ end
 
 local function execute_command()
   local cmd = parser.get_curl_command()
-  local start = os.clock()
+  -- todo: figure out a way to compute time taken for the operation
+  -- local start_time = tonumber(vim.fn.systemlist("date +%s%3N")[1])
   local resp = vim.fn.systemlist(cmd)
-  local time_elapsed = (os.clock() - start) * 100
+  -- local end_time = tonumber(vim.fn.systemlist("date +%s%3N")[1])
+  -- local time_elapsed = (end_time - start_time)
   local status, content_type, content_length, content = parse_response(resp)
   local size = "unknown"
   if content_length ~= nil and #content_length > 0 then size = content_length end
-  local status_txt = string.format("status=%d | time=%.3f s | size=%s \n", status, time_elapsed, size)
+  local status_txt = string.format("status=%d | size=%s \n", status, size)
   api.nvim_out_write(status_txt)
 
   local post_process_cmd = api.nvim_get_var("nhttp_cmd")

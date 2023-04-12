@@ -1,5 +1,7 @@
 # nhttp
 
+nhttp stands for neovim-http
+
 A nvim plugin to make http calls right from nvim
 http requests is a standard introduced by Intellij idea. More details can be found [here](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html)
 This plugin uses only neovim to issue http requests, obtain responses and process the output.
